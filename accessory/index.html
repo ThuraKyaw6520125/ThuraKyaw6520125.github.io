@@ -45,7 +45,9 @@
         </tr>
     </table>
     
-    <h2>Total Price: <span id="total-price">$0</span></h2>
+    <h3>Total Price: <span id="total-price">$0</span></h3>
+    <h3>tax: <span id="tax">$0</span></h3>
+    <h3>Total After Tax: <span id="totalTax">$0</span></h3>
     
  
     
@@ -60,7 +62,8 @@
             var price = parseFloat(selectedAccessoryValue)
             var totalPrice = document.getElementById("total-price");
             var productTable = document.getElementById("product-list");
-            
+            var tax = document.getElementById("tax")
+            var totalTax = document.getElementById("totalTax")
             var row = productTable.insertRow(-1);
             var accessoryCell = row.insertCell(0);
             var amountCell = row.insertCell(1);
@@ -70,7 +73,13 @@
             amountCell.innerHTML = amount;
             priceCell.innerHTML = "$" + (price * amount);
             
+            let tPrice = price * amount
+            let tTax = tPrice * 0.07
+            let total_after_tax = tPrice + tTax
+
             totalPrice.innerHTML = "$" + (parseFloat(totalPrice.innerHTML.substring(1)) + (price * amount));
+            tax.innerHTML = "$" + (parseFloat(tax.innerHTML.substring(1)) + (tTax));
+            totalTax.innerHTML = "$" + (parseFloat(totalTax.innerHTML.substring(1)) + (total_after_tax));
         }
         
  
