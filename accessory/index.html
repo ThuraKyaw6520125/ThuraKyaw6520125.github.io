@@ -63,24 +63,41 @@
                 var productTable = $('#product-list');
                 var tax = $('#tax');
                 var totalTax = $('#totalTax');
-
+                
                 var newRow = $('<tr>');
                 newRow.append('<td>' + selectedAccessory + '</td>');
                 newRow.append('<td>' + amount + '</td>');
                 newRow.append('<td>$' + (price * amount).toFixed(2) + '</td>');
+                newRow.append('<button class="delete-button">delete</button>');
                 productTable.append(newRow);
 
-                var tPrice = price * amount;
-                var tTax = tPrice * 0.07;
-                var total_after_tax = tPrice + tTax;
+                updateTotals(price * amount);
 
-                totalPrice.text('$' + (parseFloat(totalPrice.text().substring(1)) + tPrice).toFixed(2));
-                tax.text('$' + (parseFloat(tax.text().substring(1)) + tTax).toFixed(2));
-                totalTax.text('$' + (parseFloat(totalTax.text().substring(1)) + total_after_tax).toFixed(2));
+                newRow.find('.delete-button').click(function() {
+                    var row = $(this).closest('tr');
+                    var rowPrice = parseFloat(row.find('td:eq(2)').text().substring(1));
+                    updateTotals(-rowPrice);
+                    row.remove();
+                })
             });
         });
 
-        
+        function updateTotals(change){
+            var totalPrice = $('#total-price');
+            var tax = $('#tax');
+            var totalTax = $('#totalTax');
+            var currentTotal = parseFloat(totalPrice.text().substring(1));
+            var currentTax = parseFloat(tax.text().substring(1));
+            var currentTotalAfterTax = parseFloat(totalTax.text().substring(1));
+
+            var newTotal = currentTotal + change;
+            var newTax = newTotal * 0.07;
+            var newTotalAfterTax = newTotal + newTax
+
+            totalPrice.text('$' + newTotal.toFixed(2));
+            tax.text('$' + newTax.toFixed(2));
+            totalTax.text('$' + newTotalAfterTax.toFixed(2));
+        }
  
     </script>
 </body>
